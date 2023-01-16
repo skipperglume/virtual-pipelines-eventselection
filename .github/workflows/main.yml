@@ -5,4 +5,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Every time
-        run: echo hello world
+        run: echo hello world!
