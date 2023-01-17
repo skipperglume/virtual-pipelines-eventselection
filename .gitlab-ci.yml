@@ -29,14 +29,21 @@ build_skim_latest:
   image: rootproject/root:latest
   allow_failure: yes
 
+
+
+
 skim_ggH:
   stage: run
   dependencies:
-    - build_skim
+   - build_skim
   image: rootproject/root:6.26.10-conda
   before_script:
-    - printf $SERVICE_PASS |  kinit $CERN_USER@CERN.CH
-
+    - printf $SERVICE_PASS | base64 -d | kinit $CERN_USER@CERN.CH
   script:
-    - ./skim
     - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+  artifacts:
+    paths:
+      - skim_ggH.root
+    expire_in: 1 week
+
+
