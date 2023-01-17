@@ -2,6 +2,7 @@ stages:
   - build
   - run
   - plot
+  - test
 .hello world:
   stage: greeting
   script:
@@ -40,10 +41,11 @@ skim_ggH:
   before_script:
     - printf $SERVICE_PASS |  kinit $CERN_USER@CERN.CH
   script:
-    - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1
+    - ./skim root://eosuser.cern.ch//eos/user/g/gstark/AwesomeWorkshopFeb2020/GluGluToHToTauTau.root skim_ggH.root 19.6 11467.0 0.1 > skim_ggH.log
   artifacts:
     paths:
       - skim_ggH.root
+      - skim_ggH.log
     expire_in: 1 week
 
 plot_ggH:
@@ -60,5 +62,13 @@ plot_ggH:
     paths:
       - hist_ggH.root
 
-
-
+test_ggH:
+  stage: test
+  dependencies:
+    - skim_ggH
+    - plot_ggH
+  image: rootproject/root:6.26.10-conda
+  script:
+    - python tests/test_cutflow_ggH.py
+    - python tests/test_plot_ggH.py
+  
