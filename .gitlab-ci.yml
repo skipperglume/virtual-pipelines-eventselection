@@ -2,6 +2,7 @@ stages:
   - greeting
   - build
   - run
+  - plot
 hello world:
   stage: greeting
   script:
