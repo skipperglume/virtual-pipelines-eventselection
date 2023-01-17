@@ -1,8 +1,14 @@
+stages:
+  - greeting
+  - build
+
 hello world:
+  stage: greeting
   script:
    - echo "Hello World"
 
 .build_template:
+  stage: build
   before_script:
    - COMPILER=$(root-config --cxx)
    - FLAGS=$(root-config --cflags --libs)
@@ -17,9 +23,3 @@ build_skim_latest:
   extends: .build_template
   image: rootproject/root:latest
   allow_failure: yes
-
-
-
-
- 
-
