@@ -1,9 +1,8 @@
 stages:
-  - greeting
   - build
   - run
   - plot
-hello world:
+.hello world:
   stage: greeting
   script:
    - echo "Hello World"
@@ -46,5 +45,20 @@ skim_ggH:
     paths:
       - skim_ggH.root
     expire_in: 1 week
+
+plot_ggH:
+  stage: plot
+  dependencies:
+    - skim_ggH
+  image: rootproject/root:6.26.10-conda
+  script: 
+    - python histograms.py skim_ggH.root ggH hist_ggH.root
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: "2 days"
+    paths:
+      - hist_ggH.root
+
 
 
