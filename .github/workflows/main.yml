@@ -37,7 +37,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: skim6.22.06-conda
-
+      - name: permission
+        run: |
+          chmod +x ./skim
+          ./skim
       - name: skim
         run: ./skim
 
