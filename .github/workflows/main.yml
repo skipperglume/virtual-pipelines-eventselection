@@ -47,4 +47,25 @@ jobs:
         with:
           name: skim_ggH
           path: skim_ggH.root
+  plot:
+    needs: skim
+    runs-on: ubuntu-latest
+    container: rootproject/root:6.22.06-conda
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v3
+        with:
+          name: skim_ggH
 
+      - name: permission
+        run: chmod +x ./histograms.py
+      - name: plots
+        run: python histograms.py skim_ggH.root ggH hist_ggH.root
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: histograms
+          path: hist_ggH.root
+      
